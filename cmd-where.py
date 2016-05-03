@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*=
+# -*- coding: utf-8 -*-
 import os
 import sys
-
 
 def search_in_path(what):
     pathlist = []
@@ -25,7 +24,6 @@ def unique(seq):
 
 
 SEARCHABLE_EXT=['', '.sh', '.bat', '.cmd', '.com', '.exe', '.py', '.rb']
-
 
 if __name__ == '__main__':
     for arg in sys.argv[1:]:
