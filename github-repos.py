@@ -21,20 +21,29 @@ def urlopen(url):
     req.add_header("Content-Type", "application/json")
     return urllib.request.urlopen(req)
 
+def get_username(username_or_url):
+    parts = username_or_url.split('/')
+    if len(parts) == 1:
+        return parts[0]
+    else:
+        return parts[3]
+
 def main():
     parser = argparse.ArgumentParser(description='List or clone github user''s repositories')
 
     parser.add_argument('-v', '--verbose',  action='store_true', help='verbose mode')
-    parser.add_argument('-r', '--raw-request', dest="raw", action='store_true', help='raw request')
+    parser.add_argument('-r', '--raw-response', dest="raw", action='store_true',
+            help='show unparsed raw response')
     parser.add_argument('-c', '--clone-all', dest="clone", action='store_true',
-                        help='clone all github users'' repositories')
+                        help='clone all user\'s repositories')
     parser.add_argument('-p', '--page-number', dest='page_number', type=int, default=1,
                         help='page number to process')
-    parser.add_argument('username', nargs='+', help='github usernames')
+    parser.add_argument('username_or_url', nargs='+', help='github usernames or repository urls')
     opts = parser.parse_args()
     # print(opts)
 
-    for github_username in opts.username:
+    for username_or_url in opts.username_or_url:
+        github_username = get_username(username_or_url)
         try:
             # try processing Organizations
             repos_url = mk_url('orgs', github_username, opts.page_number)
