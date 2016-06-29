@@ -16,17 +16,28 @@ def mk_url(account_type, account, page_number):
         .replace(':page_number', str(page_number))
     return url
 
+
 def urlopen(url):
     req = urllib.request.Request(url)
     req.add_header("Content-Type", "application/json")
     return urllib.request.urlopen(req)
 
+
 def get_username(username_or_url):
+    def username(s):
+        """Gets username"""
+        idx = s.find("?")
+        if idx != -1:
+            return s[:idx]
+        return s
+
+
     parts = username_or_url.split('/')
     if len(parts) == 1:
         return parts[0]
     else:
-        return parts[3]
+        return username(parts[3])
+
 
 def main():
     parser = argparse.ArgumentParser(description='List or clone github user''s repositories')
@@ -76,6 +87,7 @@ def main():
                 subprocess.call(["git", "clone", clone_url])
             else:
                 print(clone_url)
+
 
 if __name__ == '__main__':
     main()
